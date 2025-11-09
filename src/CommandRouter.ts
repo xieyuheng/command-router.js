@@ -1,6 +1,8 @@
 import type { MaybePromise } from "./helpers/promise/index.ts"
 import { recordMapValue } from "./helpers/record/recordMapValue.ts"
-import { createPattern, type Pattern } from "./Pattern.ts"
+import { matchPattern } from "./matchPattern.ts"
+import { parsePattern } from "./parsePattern.ts"
+import { type Pattern } from "./Pattern.ts"
 
 export type CommandHandlers = Record<
   string,
@@ -8,11 +10,13 @@ export type CommandHandlers = Record<
 >
 
 export class CommandRouter {
+  commands: Record<string, string>
   patterns: Record<string, Pattern>
   handlers: CommandHandlers
 
-  constructor(inputRoutes: Record<string, string>, handlers: CommandHandlers) {
-    this.patterns = recordMapValue(inputRoutes, parsePattern)
+  constructor(commands: Record<string, string>, handlers: CommandHandlers) {
+    this.commands = commands
+    this.patterns = recordMapValue(commands, parsePattern)
     this.handlers = handlers
   }
 
@@ -20,9 +24,8 @@ export class CommandRouter {
     const [_interpreter, _script, name, ...restInput] = argv
     const pattern = this.patterns[name]
     if (pattern === undefined) {
-      let message = `unknown command`
-      message += `\n  command name: ${name}`
-      throw new Error(message)
+      console.log(this.commands)
+      return
     }
 
     const [args, options] = matchPattern(pattern, restInput)
@@ -35,20 +38,4 @@ export class CommandRouter {
 
     await handler(args, options)
   }
-}
-
-export function parsePattern(input: string): Pattern {
-  const pattern = createPattern()
-  // TODO
-  return pattern
-}
-
-export function matchPattern(
-  pattern: Pattern,
-  input: Array<string>,
-): [args: Array<string>, options: Record<string, string>] {
-  const args: Array<string> = []
-  const options: Record<string, string> = {}
-  // TODO
-  return [args, options]
 }
