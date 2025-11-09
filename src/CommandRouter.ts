@@ -10,25 +10,25 @@ export type CommandHandlers = Record<
 >
 
 export class CommandRouter {
-  commands: Record<string, string>
+  commandSpecs: Record<string, string>
   patterns: Record<string, Pattern>
   handlers: CommandHandlers
 
-  constructor(commands: Record<string, string>, handlers: CommandHandlers) {
-    this.commands = commands
-    this.patterns = recordMapValue(commands, parsePattern)
+  constructor(commandSpecs: Record<string, string>, handlers: CommandHandlers) {
+    this.commandSpecs = commandSpecs
+    this.patterns = recordMapValue(commandSpecs, parsePattern)
     this.handlers = handlers
   }
 
   async run(argv: Array<string>) {
-    const [_interpreter, _script, name, ...restInput] = argv
+    const [_interpreter, _script, name, ...tokens] = argv
     const pattern = this.patterns[name]
     if (pattern === undefined) {
-      console.log(this.commands)
+      console.log(this.commandSpecs)
       return
     }
 
-    const [args, options] = matchPattern(pattern, restInput)
+    const [args, options] = matchPattern(pattern, tokens)
     const handler = this.handlers[name]
     if (handler === undefined) {
       let message = `no handler for command`
