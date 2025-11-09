@@ -33,7 +33,7 @@ export class CommandRouter {
   }
 
   async run(argv: Array<string>): Promise<void> {
-    const [_interpreter, _script, name, ...tokens] = argv
+    const [name, ...tokens] = argv
     if (name === undefined) {
       this.printNameAndVersion()
       this.printCommands()

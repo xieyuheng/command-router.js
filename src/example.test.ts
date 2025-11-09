@@ -1,5 +1,3 @@
-#!/usr/bin/env -S node
-
 import { CommandRouter } from "./index.ts"
 
 const router = new CommandRouter("calculator", "0.1.0")
@@ -18,4 +16,7 @@ router.bind(routes, {
   },
 })
 
-await router.run(process.argv)
+await router.run([])
+await router.run(["add", "2", "2"])
+await router.run(["mul", "-x", "3", "--y", "3"])
+await router.run(["div", "2", "2"])
