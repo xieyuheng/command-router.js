@@ -2,12 +2,14 @@
 
 import { CommandRouter } from "./index.ts"
 
+const router = new CommandRouter()
+
 const routes = {
   add: "x y --version -- add two numbers",
   mul: "x y -- mul two numbers",
 }
 
-const router = new CommandRouter(routes, {
+router.bind(routes, {
   add: ([x, y]) => console.log(Number(x) + Number(y)),
   mul: ([x, y]) => console.log(Number(x) * Number(y)),
 })

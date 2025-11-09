@@ -10,32 +10,43 @@ export type CommandHandlers = Record<
 >
 
 export class CommandRouter {
-  commandSpecs: Record<string, string>
-  patterns: Record<string, Pattern>
-  handlers: CommandHandlers
+  specs: Record<string, string> = {}
+  patterns: Record<string, Pattern> = {}
+  handlers: CommandHandlers = {}
 
-  constructor(commandSpecs: Record<string, string>, handlers: CommandHandlers) {
-    this.commandSpecs = commandSpecs
-    this.patterns = recordMapValue(commandSpecs, parsePattern)
-    this.handlers = handlers
+  bind(specs: Record<string, string>, handlers: CommandHandlers): void {
+    checkHandlers(specs, handlers)
+
+    this.specs = { ...this.specs, ...specs }
+    const patterns = recordMapValue(specs, parsePattern)
+    this.patterns = { ...this.patterns, ...patterns }
+    this.handlers = { ...this.handlers, ...handlers }
   }
 
-  async run(argv: Array<string>) {
+  async run(argv: Array<string>): Promise<void> {
     const [_interpreter, _script, name, ...tokens] = argv
     const pattern = this.patterns[name]
     if (pattern === undefined) {
-      console.log(this.commandSpecs)
+      console.log(this.specs)
       return
     }
 
     const [args, options] = matchPattern(pattern, tokens)
     const handler = this.handlers[name]
-    if (handler === undefined) {
-      let message = `no handler for command`
-      message += `\n  command name: ${name}`
-      throw new Error(message)
-    }
-
     await handler(args, options)
+  }
+}
+
+function checkHandlers(
+  specs: Record<string, string>,
+  handlers: CommandHandlers,
+): void {
+  const specNames = Object.keys(specs)
+  const handlerNames = Object.keys(handlers)
+  if (!setEqual(new Set(specNames), new Set(handlerNames))) {
+    let message = `[CommandRouter.bind] handler mismatch`
+    message += `\n  command spec names: ${specNames.join(" ")}`
+    message += `\n  handler names: ${handlerNames.join(" ")}`
+    throw new Error(message)
   }
 }

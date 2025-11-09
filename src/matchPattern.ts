@@ -2,14 +2,17 @@ import type { Pattern } from "./Pattern.ts"
 
 export function matchPattern(
   pattern: Pattern,
-  tokens: Array<string>,
+  inputTokens: Array<string>,
 ): [args: Array<string>, options: Record<string, string>] {
+  const tokens = [...inputTokens]
   const args: Array<string> = []
   const options: Record<string, string> = {}
-  for (const parameter of pattern.argNames) {
+  for (const argName of pattern.argNames) {
     const token = tokens.shift()
     if (token === undefined) {
-      let message = `missing parameter: ${parameter}`
+      let message = `[CommandRouter] ${pattern.spec}`
+      message += `\n  input tokens: ${inputTokens.join(" ")}`
+      message += `\n  missing argument: ${argName}`
       throw new Error(message)
     }
 
@@ -19,7 +22,9 @@ export function matchPattern(
   while (tokens.length > 0) {
     const token = tokens.shift() as string
     if (!pattern.optionNames.includes(token)) {
-      let message = `unknown command line token: ${token}`
+      let message = `[CommandRouter] ${pattern.spec}`
+      message += `\n  input tokens: ${inputTokens.join(" ")}`
+      message += `\n  unexpected token: ${token}`
       throw new Error(message)
     }
 

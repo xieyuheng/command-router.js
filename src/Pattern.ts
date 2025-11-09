@@ -1,13 +1,5 @@
 export type Pattern = {
+  spec: string
   argNames: Array<string>
   optionNames: Array<string>
-  description: string
-}
-
-export function createPattern(): Pattern {
-  return {
-    argNames: [],
-    optionNames: [],
-    description: "",
-  }
 }

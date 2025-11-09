@@ -1,15 +1,15 @@
-import { type Pattern, createPattern } from "./Pattern.ts"
+import { type Pattern } from "./Pattern.ts"
 
-export function parsePattern(commandSpec: string): Pattern {
-  const pattern = createPattern()
-  const [argumentSpec, description] = commandSpec.split(" -- ")
-  pattern.description = description
-  const tokens = argumentSpec.split(" ")
+export function parsePattern(spec: string): Pattern {
+  const argNames: Array<string> = []
+  const optionNames: Array<string> = []
+
+  const tokens = spec.split(" -- ")[0].split(" ")
 
   while (tokens.length > 0) {
     const token = tokens.shift() as string
     if (!token.startsWith("-")) {
-      pattern.argNames.push(token)
+      argNames.push(token)
     } else {
       tokens.unshift(token)
       break
@@ -19,12 +19,16 @@ export function parsePattern(commandSpec: string): Pattern {
   while (tokens.length > 0) {
     const token = tokens.shift() as string
     if (token.startsWith("-")) {
-      pattern.optionNames.push(token)
+      optionNames.push(token)
     } else {
       tokens.unshift(token)
       break
     }
   }
 
-  return pattern
+  return {
+    argNames,
+    optionNames,
+    spec,
+  }
 }

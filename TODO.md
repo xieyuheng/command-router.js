@@ -1,1 +1,1 @@
-`CommandRouter.run(command)` -- print help if can not find command
+`CommandRouter.run` -- print help if can not find command
