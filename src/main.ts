@@ -3,7 +3,7 @@
 import { CommandRouter } from "./index.ts"
 
 const routes = {
-  add: "x y -- add two numbers",
+  add: "x y [z] --version -- add two numbers",
   mul: "x y -- mul two numbers",
 }
 
