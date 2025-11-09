@@ -7,7 +7,11 @@ import { type Pattern } from "./Pattern.ts"
 
 export type CommandHandlers = Record<
   string,
-  (args: Array<string>, options: Record<string, string>) => MaybePromise<void>
+  (
+    args: Array<string>,
+    options: Record<string, string>,
+    tokens: Array<string>,
+  ) => MaybePromise<void>
 >
 
 export class CommandRouter {
@@ -50,7 +54,7 @@ export class CommandRouter {
 
     const [args, options] = matchPattern(pattern, tokens)
     const handler = this.handlers[name]
-    await handler(args, options)
+    await handler(args, options, tokens)
   }
 
   printNameAndVersion() {
