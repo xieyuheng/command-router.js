@@ -1,5 +1,5 @@
 import type { MaybePromise } from "../helpers/promise/index.ts"
-import type { Middleware } from "./Middleware.ts"
+import { applyMiddleware, type Middleware } from "./Middleware.ts"
 
 export type Handlers = Record<string, Handler>
 
@@ -20,6 +20,6 @@ export function applyHandler(handler: Handler): HandlerFunction {
   if (handler instanceof Function) {
     return handler
   } else {
-    return applyHandler(handler.handler)
+    return applyMiddleware(handler.middleware, applyHandler(handler.handler))
   }
 }
