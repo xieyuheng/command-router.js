@@ -63,10 +63,11 @@ export class Router {
       process.exit(1)
     }
 
+    const context = { router: this, route, tokens }
     await applyMiddleware(this.middleware, applyHandler(handler))(
       args,
       options,
-      tokens,
+      context,
     )
   }
 

@@ -1,9 +1,10 @@
 import * as Cmd from "./src/index.ts"
 
 function logger(): Cmd.Middleware {
-  return (args, options, tokens, continuation) => {
-    console.log({ args, options, tokens })
-    return continuation(args, options, tokens)
+  return (args, options, context, continuation) => {
+    const command = context.route.command
+    console.log({ command, args, options  })
+    return continuation(args, options, context)
   }
 }
 
@@ -17,9 +18,9 @@ router.defineRoutes([
 ])
 
 function doubleArgs(): Cmd.Middleware {
-  return (args, options, tokens, continuation) => {
+  return (args, options, context, continuation) => {
     args = args.map((arg) => String(Number(arg) * 2))
-    return continuation(args, options, tokens)
+    return continuation(args, options, context)
   }
 }
 

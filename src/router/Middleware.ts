@@ -1,4 +1,5 @@
 import type { MaybePromise } from "../helpers/promise/index.ts"
+import type { Context } from "./Context.ts"
 import type { HandlerFunction } from "./Handler.ts"
 
 export type Middleware = MiddlewareArray | MiddlewareFunction
@@ -8,7 +9,7 @@ export type MiddlewareArray = Array<Middleware>
 export type MiddlewareFunction = (
   args: Array<string>,
   options: Record<string, string>,
-  tokens: Array<string>,
+  context: Context,
   continuation: HandlerFunction,
 ) => MaybePromise<void>
 
@@ -17,8 +18,8 @@ export function applyMiddleware(
   continuation: HandlerFunction,
 ): HandlerFunction {
   if (middleware instanceof Function) {
-    return (args, options, tokens) =>
-      middleware(args, options, tokens, continuation)
+    return (args, options, context) =>
+      middleware(args, options, context, continuation)
   } else {
     if (middleware.length === 0) {
       return continuation
