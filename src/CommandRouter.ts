@@ -74,20 +74,18 @@ function checkHandlers(
 ): void {
   const specNames = Object.keys(specs)
   const handlerNames = Object.keys(handlers)
-  const missingHandlerNames = Array.from(setDifference(
-    new Set(specNames),
-    new Set(handlerNames),
-  ))
-  const missingSpecNames = Array.from(setDifference(
-    new Set(handlerNames),
-    new Set(specNames),
-  ))
+  const missingHandlerNames = Array.from(
+    setDifference(new Set(specNames), new Set(handlerNames)),
+  )
+  const missingSpecNames = Array.from(
+    setDifference(new Set(handlerNames), new Set(specNames)),
+  )
   if (missingHandlerNames.length !== 0 || missingSpecNames.length !== 0) {
     let message = `[CommandRouter.bind] handler mismatch`
     if (missingHandlerNames.length !== 0)
-      message += `\n  missing handler names: ${(missingHandlerNames).join(" ")}`
+      message += `\n  missing handler names: ${missingHandlerNames.join(" ")}`
     if (missingSpecNames.length !== 0)
-      message += `\n  missing spec names: ${(missingSpecNames).join(" ")}`
+      message += `\n  missing spec names: ${missingSpecNames.join(" ")}`
     console.log(message)
     process.exit(1)
   }
