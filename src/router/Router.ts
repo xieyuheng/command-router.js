@@ -18,15 +18,14 @@ export class Router {
     this.version = version
   }
 
-  bind(
-    input: Record<string, string> | Array<string>,
-    handlers: Handlers,
-  ): void {
+  defineRoutes(input: Record<string, string> | Array<string>): void {
     const specs = createRoutes(input)
-
     this.specs = { ...this.specs, ...specs }
     const routes = recordMapValue(specs, parseRoute)
     this.routes = { ...this.routes, ...routes }
+  }
+
+  defineHandlers(handlers: Handlers): void {
     this.handlers = { ...this.handlers, ...handlers }
   }
 
