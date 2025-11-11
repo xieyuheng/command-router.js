@@ -1,9 +1,12 @@
 import { recordMapValue } from "../helpers/record/recordMapValue.ts"
-import { createRoutes } from "./createRoutes.ts"
 import { type Handlers } from "./Handler.ts"
 import { matchRoute } from "./matchRoute.ts"
-import { parseRoute } from "./parseRoute.ts"
+import { createRoutes, parseRoute } from "./parseRoute.ts"
 import type { Route } from "./Route.ts"
+
+export function createRouter(name: string, version: string): Router {
+  return new Router(name, version)
+}
 
 export class Router {
   name: string
@@ -18,7 +21,7 @@ export class Router {
     this.version = version
   }
 
-  defineRoutes(input: Record<string, string> | Array<string>): void {
+  defineRoutes(input: Array<string>): void {
     const specs = createRoutes(input)
     this.specs = { ...this.specs, ...specs }
     const routes = recordMapValue(specs, parseRoute)
