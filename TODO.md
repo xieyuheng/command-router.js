@@ -1,1 +1,2 @@
-`Handler` -- can have `middleware`
+`applyHandler`
+`Handler` -- can be object have `middleware`

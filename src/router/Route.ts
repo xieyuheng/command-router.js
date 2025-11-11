@@ -41,7 +41,7 @@ export function parseRoute(command: string): Route {
   }
 }
 
-export function routeMatch(
+export function matchRoute(
   route: Route,
   inputTokens: Array<string>,
 ): [args: Array<string>, options: Record<string, string>] {

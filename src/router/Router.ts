@@ -1,5 +1,5 @@
 import { type Handlers } from "./Handler.ts"
-import { parseRoute, routeMatch, type Route } from "./Route.ts"
+import { parseRoute, matchRoute, type Route } from "./Route.ts"
 
 export function createRouter(name: string, version: string): Router {
   return new Router(name, version)
@@ -43,7 +43,7 @@ export class Router {
       return
     }
 
-    const [args, options] = routeMatch(route, tokens)
+    const [args, options] = matchRoute(route, tokens)
     const handler = this.handlers[name]
     if (handler === undefined) {
       let message = `[Router.run] undefined handler`
