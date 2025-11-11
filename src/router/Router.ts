@@ -1,17 +1,16 @@
 import { recordMapValue } from "../helpers/record/recordMapValue.ts"
-import { setDifference } from "../helpers/set/setAlgebra.ts"
 import { createRoutes } from "./createRoutes.ts"
 import { type Handlers } from "./Handler.ts"
-import { matchPattern } from "./matchPattern.ts"
-import { parsePattern } from "./parsePattern.ts"
-import type { Pattern } from "./Pattern.ts"
+import { matchRoute } from "./matchRoute.ts"
+import { parseRoute } from "./parseRoute.ts"
+import type { Route } from "./Route.ts"
 
 export class Router {
   name: string
   version: string
 
   specs: Record<string, string> = {}
-  patterns: Record<string, Pattern> = {}
+  routes: Record<string, Route> = {}
   handlers: Handlers = {}
 
   constructor(name: string, version: string) {
@@ -25,10 +24,9 @@ export class Router {
   ): void {
     const specs = createRoutes(input)
 
-
     this.specs = { ...this.specs, ...specs }
-    const patterns = recordMapValue(specs, parsePattern)
-    this.patterns = { ...this.patterns, ...patterns }
+    const routes = recordMapValue(specs, parseRoute)
+    this.routes = { ...this.routes, ...routes }
     this.handlers = { ...this.handlers, ...handlers }
   }
 
@@ -40,15 +38,15 @@ export class Router {
       return
     }
 
-    const pattern = this.patterns[name]
-    if (pattern === undefined) {
+    const route = this.routes[name]
+    if (route === undefined) {
       this.printNameAndVersion()
       console.log(`unknown command: ${name}`)
       this.printCommands()
       return
     }
 
-    const [args, options] = matchPattern(pattern, tokens)
+    const [args, options] = matchRoute(route, tokens)
     const handler = this.handlers[name]
     await handler(args, options, tokens)
   }

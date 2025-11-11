@@ -1,16 +1,16 @@
-import type { Pattern } from "./Pattern.ts"
+import type { Route } from "./Route.ts"
 
-export function matchPattern(
-  pattern: Pattern,
+export function matchRoute(
+  route: Route,
   inputTokens: Array<string>,
 ): [args: Array<string>, options: Record<string, string>] {
   const tokens = [...inputTokens]
   const args: Array<string> = []
   const options: Record<string, string> = {}
-  for (const argName of pattern.argNames) {
+  for (const argName of route.argNames) {
     const token = tokens.shift()
     if (token === undefined) {
-      let message = `[Router] ${pattern.spec}`
+      let message = `[Router] ${route.spec}`
       message += `\n  input tokens: ${inputTokens.join(" ")}`
       message += `\n  missing argument: ${argName}`
       console.log(message)
@@ -22,7 +22,7 @@ export function matchPattern(
 
   while (tokens.length > 0) {
     const token = tokens.shift() as string
-    if (pattern.optionNames.includes(token)) {
+    if (route.optionNames.includes(token)) {
       const nextToken = tokens.shift()
       if (nextToken === undefined) {
         options[token] = ""

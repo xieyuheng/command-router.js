@@ -1,4 +1,3 @@
 `router.defineRoutes` & `router.defineHandlers`
-`Pattern` has `name` and `command`
-rename `Pattern` to `Route`
+`Route` has `name` and `command`
 `Handler` -- can have `middleware`

@@ -1,6 +1,6 @@
-import { type Pattern } from "./Pattern.ts"
+import { type Route } from "./Route.ts"
 
-export function parsePattern(spec: string): Pattern {
+export function parseRoute(spec: string): Route {
   const argNames: Array<string> = []
   const optionNames: Array<string> = []
 
