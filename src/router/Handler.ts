@@ -8,4 +8,11 @@ export type Handler = (
   tokens: Array<string>,
 ) => MaybePromise<void>
 
-// export function  applyHandler()
+export async function applyHandler(
+  handler: Handler,
+  args: Array<string>,
+  options: Record<string, string>,
+  tokens: Array<string>,
+): Promise<void> {
+  return await handler(args, options, tokens)
+}

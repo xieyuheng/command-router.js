@@ -1,5 +1,5 @@
-import { type Handlers } from "./Handler.ts"
-import { parseRoute, matchRoute, type Route } from "./Route.ts"
+import { applyHandler, type Handlers } from "./Handler.ts"
+import { matchRoute, parseRoute, type Route } from "./Route.ts"
 
 export function createRouter(name: string, version: string): Router {
   return new Router(name, version)
@@ -52,7 +52,7 @@ export class Router {
       process.exit(1)
     }
 
-    await handler(args, options, tokens)
+    await applyHandler(handler, args, options, tokens)
   }
 
   printNameAndVersion() {
