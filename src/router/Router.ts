@@ -1,7 +1,7 @@
 import { recordMapValue } from "../helpers/record/recordMapValue.ts"
 import { type Handlers } from "./Handler.ts"
 import { matchRoute } from "./matchRoute.ts"
-import { createRoutes, parseRoute } from "./parseRoute.ts"
+import { parseRoute } from "./parseRoute.ts"
 import type { Route } from "./Route.ts"
 
 export function createRouter(name: string, version: string): Router {
@@ -12,7 +12,6 @@ export class Router {
   name: string
   version: string
 
-  specs: Record<string, string> = {}
   routes: Record<string, Route> = {}
   handlers: Handlers = {}
 
@@ -21,11 +20,10 @@ export class Router {
     this.version = version
   }
 
-  defineRoutes(input: Array<string>): void {
-    const specs = createRoutes(input)
-    this.specs = { ...this.specs, ...specs }
-    const routes = recordMapValue(specs, parseRoute)
-    this.routes = { ...this.routes, ...routes }
+  defineRoutes(commands: Array<string>): void {
+    for (const route of commands.map(parseRoute)) {
+      this.routes[route.name] = route
+    }
   }
 
   defineHandlers(handlers: Handlers): void {
@@ -59,7 +57,7 @@ export class Router {
 
   printCommands() {
     console.log(`commands:`)
-    for (const [name, spec] of Object.entries(this.specs))
-      console.log(`  ${name} ${spec}`)
+    for (const route of Object.values(this.routes))
+      console.log(`  ${route.command}`)
   }
 }

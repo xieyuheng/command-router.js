@@ -1,5 +1,6 @@
 export type Route = {
-  spec: string
+  command: string
+  name: string
   argNames: Array<string>
   optionNames: Array<string>
 }

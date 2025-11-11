@@ -1,25 +1,12 @@
 import { type Route } from "./Route.ts"
 
-export function createRoutes(
-  input: Record<string, string> | Array<string>,
-): Record<string, string> {
-  if (input instanceof Array) {
-    return Object.fromEntries(
-      input.map((line) => {
-        const [head, ...rest] = line.split(" ")
-        return [head, rest.join(" ")]
-      }),
-    )
-  }
+export function parseRoute(command: string): Route {
+  command = command.split(" -- ")[0]
 
-  return input
-}
+  const [name, ...tokens] = command.split(" ")
 
-export function parseRoute(spec: string): Route {
   const argNames: Array<string> = []
   const optionNames: Array<string> = []
-
-  const tokens = spec.split(" -- ")[0].split(" ")
 
   while (tokens.length > 0) {
     const token = tokens.shift() as string
@@ -42,8 +29,9 @@ export function parseRoute(spec: string): Route {
   }
 
   return {
+    command,
+    name,
     argNames,
     optionNames,
-    spec,
   }
 }
