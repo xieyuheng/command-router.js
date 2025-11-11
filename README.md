@@ -5,7 +5,8 @@ A simple library for building CLI with sub-commands in Node.js.
 ## Example
 
 ```sh
-node calculator.example.ts
+node calculator.example.ts add 2 3
+node calculator.example.ts mul --x 3 --y 4
 ```
 
 ```typescript
