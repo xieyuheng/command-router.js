@@ -43,7 +43,7 @@ router.defineHandlers({
       console.log(Number(x) + Number(y))
     },
   },
-  mul(args, options) {
+  mul: (args, options) => {
     console.log(Number(options["--x"]) * Number(options["--y"]))
   },
 })
