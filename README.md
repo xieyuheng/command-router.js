@@ -1,17 +1,17 @@
-# command-router.js
+# command.js
 
 A simple library for building CLI with sub-commands in Node.js.
 
 ## Usage
 
 ```typescript
-import { CommandRouter } from "@xieyuheng/command-router.js"
+import * as cmd from "@xieyuheng/command.js"
 
-const router = new CommandRouter("calculator", "0.1.0")
+const router = cmd.createRouter("calculator", "0.1.0")
 
 const routes = {
   add: "x y -- add two numbers",
-  mul: "-x --y -- mul two numbers",
+  mul: "--x --y -- mul two numbers",
 }
 
 router.bind(routes, {
@@ -19,12 +19,12 @@ router.bind(routes, {
     console.log(Number(x) + Number(y))
   },
   mul: (args, options) => {
-    console.log(Number(options["-x"]) * Number(options["--y"]))
+    console.log(Number(options["--x"]) * Number(options["--y"]))
   },
 })
 
 await router.run(["add", "2", "2"])
-await router.run(["mul", "-x", "3", "--y", "3"])
+await router.run(["mul", "--x", "3", "--y", "3"])
 ```
 
 ## License
