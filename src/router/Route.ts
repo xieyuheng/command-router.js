@@ -51,7 +51,7 @@ export function routeMatch(
   for (const argName of route.argNames) {
     const token = tokens.shift()
     if (token === undefined) {
-      let message = `[Router] ${route.command}`
+      let message = `[routeMatch] ${route.command}`
       message += `\n  input tokens: ${inputTokens.join(" ")}`
       message += `\n  missing argument: ${argName}`
       console.log(message)

@@ -45,6 +45,13 @@ export class Router {
 
     const [args, options] = routeMatch(route, tokens)
     const handler = this.handlers[name]
+    if (handler === undefined) {
+      let message = `[Router.run] undefined handler`
+      message += `\n  name: ${name}`
+      console.log(message)
+      process.exit(1)
+    }
+
     await handler(args, options, tokens)
   }
 
