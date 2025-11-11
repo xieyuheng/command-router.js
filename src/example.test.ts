@@ -1,6 +1,15 @@
 import * as cmd from "./index.ts"
 
-const router = cmd.createRouter("calculator", "0.1.0")
+function logger(): cmd.Middleware {
+  return (args, options, tokens, continuation) => {
+    console.log({ args, options, tokens })
+    return continuation(args, options, tokens)
+  }
+}
+
+const router = cmd.createRouter("calculator", "0.1.0", {
+  middleware: [logger()],
+})
 
 router.defineRoutes([
   "add x y -- add two numbers and print the result",
