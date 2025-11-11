@@ -1,6 +1,10 @@
-import type { MaybePromise } from "../helpers/promise/index.ts"
-import type { Context } from "./Context.ts"
-import type { HandlerArgs, HandlerFunction, HandlerOptions } from "./Handler.ts"
+import type {
+  HandlerArgs,
+  HandlerContext,
+  HandlerFunction,
+  HandlerOptions,
+  HandlerResult,
+} from "./Handler.ts"
 
 export type Middleware = MiddlewareArray | MiddlewareFunction
 
@@ -9,9 +13,9 @@ export type MiddlewareArray = Array<Middleware>
 export type MiddlewareFunction = (
   args: HandlerArgs,
   options: HandlerOptions,
-  context: Context,
+  context: HandlerContext,
   continuation: HandlerFunction,
-) => MaybePromise<void>
+) => HandlerResult
 
 export function applyMiddleware(
   middleware: Middleware,
